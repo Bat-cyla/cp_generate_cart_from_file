@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<addon scheme="3.0">
+    <id>cp_generate_cart_from_file</id>
+    <version>1.0</version>
+    <priority>3000</priority>
+    <position>1</position>
+    <default_language>en</default_language>
+    <status>active</status>
+    <has_icon>Y</has_icon>
+    <supplier>Cart-Power</supplier>
+    <supplier_link>https://cart-power.com</supplier_link>
+    <compatibility>
+        <php_version>
+            <min>7.4.0</min>
+        </php_version>
+        <dependencies>price_list</dependencies>
+    </compatibility>
+    <authors>
+        <author>
+            <name>Cart-Power</name>
+            <email>sales@cart-power.com</email>
+            <url>https://cart-power.com</url>
+        </author>
+    </authors>
+    <settings>
+        <sections>
+            <section id="general">
+                <items>
+                    <item id="PDF_export">
+                        <type>checkbox</type>
+                    </item>
+                    <item id="CSV_export">
+                        <type>checkbox</type>
+                    </item>
+                </items>
+            </section>
+        </sections>
+    </settings>
+    <queries>
+        <item>
+            CREATE TABLE IF NOT EXISTS `?:cp_generate_cart_from_file_templates` (
+                `template_id` int(11) unsigned NOT NULL auto_increment,
+                `name` varchar(25) NOT NULL default '',
+                `timestamp` int(11) unsigned NOT NULL default '0',
+                `default_template` char(1) NOT NULL default 'N',
+                PRIMARY KEY  (`template_id`)
+            ) Engine=InnoDB DEFAULT CHARSET UTF8;
+        </item>
+        <item>
+            CREATE TABLE IF NOT EXISTS `?:cp_generate_cart_from_file_attachments` (
+                `attachment_id` int(11) unsigned NOT NULL auto_increment,
+                `template_id` int(11) unsigned NOT NULL default '0',
+                `filename` varchar(100) NOT NULL default '',
+                `filesize` int(11) unsigned NOT NULL default '0',
+                PRIMARY KEY  (`attachment_id`),
+                KEY `template_id` (`template_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET UTF8;
+        </item>
+        <item for="uninstall">DROP TABLE IF EXISTS ?:cp_generate_cart_from_file_templates;</item>
+        <item for="uninstall">DROP TABLE IF EXISTS ?:cp_generate_cart_from_file_attachments;</item>
+    </queries>
+    <functions>
+        <item for="uninstall">fn_cp_generate_cart_from_file_delete_dir</item>
+    </functions>
+</addon>

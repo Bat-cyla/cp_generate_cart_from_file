@@ -1,0 +1,1 @@
+{style src="addons/cp_generate_cart_from_file/styles.less"}
