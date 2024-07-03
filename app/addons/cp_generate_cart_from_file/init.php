@@ -21,6 +21,7 @@ use Tygh\Registry;
 
 if ( !defined('AREA') ) { die('Access denied'); }
 
+
 Registry::set('config.storage.cp_generate_cart_from_file', [
     'prefix' => 'cp_generate_cart_from_file',
     'secured' => true,

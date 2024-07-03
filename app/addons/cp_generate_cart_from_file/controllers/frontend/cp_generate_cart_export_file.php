@@ -1,5 +1,6 @@
 <?php
 
+use Tygh\Registry;
 use Tygh\Tygh;
 
 
@@ -10,13 +11,14 @@ if (!defined('BOOTSTRAP')) {
 $view = Tygh::$app['view'];
 $cart = &Tygh::$app['session']['cart'];
 $auth = &Tygh::$app['session']['auth'];
-//$options=Tygh::$app['session']['options'];
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'generate') {
+
         if(!empty($cart)){
-            $cart=$cart['products'];
-            foreach($cart as $product){
+            $product_data=$cart['products'];
+            foreach($product_data as $product){
                 $cart_data[]=$product;
             }
         }
@@ -44,8 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $export_data[$key]['total_price']=$export_data[$key]['price']*$export_data[$key]['amount'];
                     }
                 }
-                //fn_print_die($export_data);
                 fn_cp_generate_cart_export_file($export_data, $options, '"');
+
+                fn_cp_generate_cart_from_file_put_file_to_download($options['filename']);
             }
         }
 
@@ -58,7 +61,16 @@ if ($mode == 'view') {
         if (empty($auth['user_id'])) {
             Tygh::$app['ajax']->assign('force_redirection', fn_url('auth.login_form'));
         } else {
-            //fn_print_r($options);
+            $cp_pdf_option= Registry::get('addons.cp_generate_cart_from_file.PDF_export');
+            $cp_csv_option= Registry::get('addons.cp_generate_cart_from_file.CSV_export');
+            if($cp_pdf_option=='Y' and $cp_csv_option=='Y'){
+                $export_format='pdf_csv';
+            }else{
+                $cp_csv_option=='Y'?$export_format='csv_table':$export_format='pdf_cp';
+            }
+                Tygh::$app['view']->assign([
+                    'export_format'=> $export_format,
+                ]);
             $view->display('addons/cp_generate_cart_from_file/views/export_view.tpl');
         }
     }

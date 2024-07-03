@@ -301,7 +301,6 @@ function fn_cp_generate_cart_export_file(&$data, &$options, $enclosure)
     $delimiter=$options['delimiter'];
     $eol = "\n";
 
-    fn_mkdir(fn_get_files_dir_path());
     foreach ($data as $k => $v) {
         foreach ($v as $name => $value) {
             $data[$k][$name] = $enclosure . str_replace(array("\r","\n","\t",$enclosure), array('','','',$enclosure.$enclosure), $value) . $enclosure;
@@ -319,14 +318,23 @@ function fn_cp_generate_cart_export_file(&$data, &$options, $enclosure)
     Tygh::$app['view']->assign('eol', $eol);
     $csv = Tygh::$app['view']->fetch('design/backend/templates/views/exim/components/export_csv.tpl');
 
-    $fd = fopen(fn_get_files_dir_path() . $options['filename'], ($output_started && !isset($options['force_header'])) ? 'ab' : 'wb');
-    if ($fd) {
-        fwrite($fd, $csv, strlen($csv));
-        fclose($fd);
-        @chmod(fn_get_files_dir_path() . $options['filename'], DEFAULT_FILE_PERMISSIONS);
-    }
-    if ($output_started == false) {
-        $output_started = true;
-    }
-    return true;
+    $filename=fn_get_files_dir_path() . $options['filename'];
+
+    file_put_contents($filename,$csv);
+    $attachment_obj= Storage::instance('cp_generate_cart_from_file');
+    fn_print_die($attachment_obj->isExist($options['filename']));
+
+    exit;
+
 }
+
+function fn_cp_generate_cart_from_file_put_file_to_download($data){
+
+    $cart_storage = Storage::instance('cp_generate_cart_from_file');
+    fn_print_die($cart_storage);
+    $cart_storage->get($data['filename']);
+
+    $cart_storage->delete($data['filename']);
+
+}
+

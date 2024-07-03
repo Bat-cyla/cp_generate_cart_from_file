@@ -2,11 +2,14 @@
     <form action="{""|fn_url}" method="post" name="cp_unload_file_form" class="form-horizontal cm-ajax" enctype="multipart/form-data">
             <div class="cp-row">
                 <div class="cp-row-item-main">
+                    {if $export_format == 'pdf_csv'}
                     <input type="radio" name="format" id="formatChoice1" value="csv_table" />
                     <label for="formatChoice1">{__("cp_csv_table")}</label>
                     <input type="radio" name="format" id="formatChoice2" value="pdf_cp" />
                     <label for="formatChoice2">{__("cp_pdf_commercial_proposal")}</label>
-
+                    {else}
+                        <input type="hidden" name="format" value="{$export_format}">
+                    {/if}
                     <div class="cp-message">
                         {__("cp_export_view_message")}
                     </div>
