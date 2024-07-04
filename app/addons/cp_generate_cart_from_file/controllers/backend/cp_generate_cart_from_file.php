@@ -27,6 +27,7 @@ $view = Tygh::$app['view'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'update') {
         $params = $_REQUEST;
+
         $template_data = $params['template_data'];
         if (!empty($params['template_data'])) {
             $template_id = fn_cp_generate_cart_from_file_update_template(

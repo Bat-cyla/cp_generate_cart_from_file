@@ -294,47 +294,47 @@ function fn_cp_generate_cart_from_file_delete_dir()
     }
 }
 
-function fn_cp_generate_cart_export_file(&$data, &$options, $enclosure)
+function fn_cp_generate_cart_from_file_export_file(&$data, &$options)
 {
+    $data=array_map('fn_cp_generate_cart_from_file_array_map',$data);
 
-    static $output_started = false;
     $delimiter=$options['delimiter'];
     $eol = "\n";
 
-    foreach ($data as $k => $v) {
-        foreach ($v as $name => $value) {
-            $data[$k][$name] = $enclosure . str_replace(array("\r","\n","\t",$enclosure), array('','','',$enclosure.$enclosure), $value) . $enclosure;
-        }
-        // If a line in a csv file ends with 3 or more double quotes (i.e. """), the mime content type is often
-        // determined incorrectly, e.g. by using finfo_file or mime_content_type php functions.
-        // To get round it, add an extra space to lines like this:
-        if (substr($data[$k][$name], -3) == '"""') {
-            $data[$k][$name] .= ' ';
-        }
-    }
+
     Tygh::$app['view']->assign('fields', array_keys($data[0]));
     Tygh::$app['view']->assign('export_data', $data);
     Tygh::$app['view']->assign('delimiter', $delimiter);
     Tygh::$app['view']->assign('eol', $eol);
     $csv = Tygh::$app['view']->fetch('design/backend/templates/views/exim/components/export_csv.tpl');
 
-    $filename=fn_get_files_dir_path() . $options['filename'];
+    file_put_contents('var/cp_generate_cart_from_file/'.$options['filename'],$csv);
+    $export_obj= Storage::instance('cp_generate_cart_from_file');
+    if(!$export_obj->isExist($options['filename'])){
+        return false;
+    }
 
-    file_put_contents($filename,$csv);
-    $attachment_obj= Storage::instance('cp_generate_cart_from_file');
-    fn_print_die($attachment_obj->isExist($options['filename']));
+    $export_obj->get($options['filename']);
 
-    exit;
+    $export_obj->delete($options['filename']);
+
+
+    return true;
 
 }
 
-function fn_cp_generate_cart_from_file_put_file_to_download($data){
+function fn_cp_generate_cart_from_file_array_map($arr){
 
-    $cart_storage = Storage::instance('cp_generate_cart_from_file');
-    fn_print_die($cart_storage);
-    $cart_storage->get($data['filename']);
+        $arr=[
+            'product'=>$arr['product'],
+            'product_code'=>$arr['product_code'],
+            'product_options'=>$arr['product_options'],
+            //'company_id'=>$arr['company_id'],
+            'price'=>$arr['price'],
+            'amount'=>$arr['amount'],
+            'total_price'=>$arr['total_price'],
+            ];
 
-    $cart_storage->delete($data['filename']);
-
+    return $arr;
 }
 

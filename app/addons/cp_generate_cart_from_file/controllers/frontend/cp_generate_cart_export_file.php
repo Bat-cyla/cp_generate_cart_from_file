@@ -21,12 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             foreach($product_data as $product){
                 $cart_data[]=$product;
             }
+
         }
         if(isset($_REQUEST['format'])){
             if($_REQUEST['format']=='csv_table'){
                 $options=[
                     'delimiter'=> ";",
-                    'filename'=> "cart2.csv",
+                    'filename'=> "cart.csv",
                     'price_dec_sign_delimiter'=>"."
                 ];
                 $export_fields=[
@@ -36,19 +37,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'price',
                     'amount',
                 ];
+
+                if(isset($cart_data['company_id'])){
+                    $export_fields[]= 'company_id';
+                }
                 $export_data=[];
                 foreach($cart_data as $key=>$product){
                     foreach($product as $field=>$value){
                         if(in_array($field,$export_fields)){
                             $export_data[$key][$field]=$value;
                         }
-                        $export_data[$key]['product_options']=implode(',',$export_data[$key]['product_options']);
-                        $export_data[$key]['total_price']=$export_data[$key]['price']*$export_data[$key]['amount'];
+                        if(!empty($export_data[$key]['product_options'])){
+                            $export_data[$key]['product_options']=implode(',',$export_data[$key]['product_options']);
+                        }else{
+                            $export_data[$key]['product_options']='';
+                        }
+                        if(!empty($export_data[$key]['price']) and !empty($export_data[$key]['amount'])) {
+                            $export_data[$key]['total_price'] = $export_data[$key]['price'] * $export_data[$key]['amount'];
+                        }else{
+                            $export_data[$key]['total_price']=0;
+                        }
+
                     }
                 }
-                fn_cp_generate_cart_export_file($export_data, $options, '"');
 
-                fn_cp_generate_cart_from_file_put_file_to_download($options['filename']);
+                fn_cp_generate_cart_from_file_export_file($export_data, $options);
+
+
             }
         }
 

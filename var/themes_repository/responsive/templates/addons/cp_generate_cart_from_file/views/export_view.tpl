@@ -1,5 +1,5 @@
 <div id="cp_export_cart_modal">
-    <form action="{""|fn_url}" method="post" name="cp_unload_file_form" class="form-horizontal cm-ajax" enctype="multipart/form-data">
+    <form action="{""|fn_url}" method="post" name="cp_unload_file_form" class="form-horizontal " enctype="multipart/form-data">
             <div class="cp-row">
                 <div class="cp-row-item-main">
                     {if $export_format == 'pdf_csv'}
