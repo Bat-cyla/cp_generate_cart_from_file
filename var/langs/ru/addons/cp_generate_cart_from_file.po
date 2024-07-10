@@ -1,0 +1,165 @@
+msgid ""
+msgstr "Project-Id-Version: tygh"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Russian\n"
+"Language: ru_RU\n"
+
+msgctxt "Addons::name::cp_generate_cart_from_file"
+msgid "Cart-Power: Generate cart from file"
+msgstr "Cart-Power: Генерация корзины из файла"
+
+msgctxt "Addons::description::cp_generate_cart_from_file"
+msgid "Adds the ability to generate cart from XLS and CSV file. Developed by <a target=\"_blank\" href=\"http://cart-power.com/\">Cart-Power</a>"
+msgstr "Добавляет возможность сгенерировать корзину из файлов формата XLS и CSV. Разработано <a target=\"_blank\" href=\"http://cart-power.com/\">Cart-Power</a>"
+
+msgctxt "SettingsSections::cp_generate_cart_from_file::general"
+msgid "General"
+msgstr "Основные настройки"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::PDF_export"
+msgid "Allow clients to generate commercial proposals in PDF"
+msgstr "Разрешить клиентам формировать КП в PDF"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::CSV_export"
+msgid "Allow cart export to CSV"
+msgstr "Разрешить экспорт корзины в CSV"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::cp_header"
+msgid "Column Naming Rules"
+msgstr "Правила наименования столбцов"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::cp_name"
+msgid "Product name"
+msgstr "Наименование товара"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::cp_artiqle"
+msgid "Product code"
+msgstr "Артикул производителя"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::cp_amount"
+msgid "Product amount"
+msgstr "Количество товара"
+
+msgctxt "Languages::cp_generate_view"
+msgid "Upload from file"
+msgstr "Загрузить из файла"
+
+msgctxt "Languages::cp_export_view"
+msgid "Export cart"
+msgstr "Экспорт корзины"
+
+msgctxt "Languages::cp_csv_table"
+msgid "Table in CSV"
+msgstr "Таблица в CSV"
+
+msgctxt "Languages::cp_pdf_commercial_proposal"
+msgid "Commercial proposal in PDF"
+msgstr "Коммерческое предложение в PDF"
+
+msgctxt "Languages::cp_export_view_message"
+msgid "The export file is ready. You can download it or send it to the specified email address."
+msgstr "Файл экспорта готов. Вы можете скачать его или отправить на указанный адрес электронной почты."
+
+msgctxt "Languages::select_of_column_order"
+msgid "Specify the order of the columns in your table, then upload the file"
+msgstr "Укажите порядок колонок в Вашей таблице, затем загрузите файл"
+
+msgctxt "Languages::cp_name"
+msgid "Name of product"
+msgstr "Наименование товара"
+
+msgctxt "Languages::cp_qty"
+msgid "Product QTY"
+msgstr "Количество товара"
+
+msgctxt "Languages::cp_artiqle"
+msgid "Product number"
+msgstr "Артикул производителя"
+
+msgctxt "Languages::cp_select_files"
+msgid "Select file"
+msgstr "Выберите файл"
+
+msgctxt "Languages::cp_selected_files"
+msgid "Selected file"
+msgstr "Выбрано файлов"
+
+msgctxt "Languages::cp_bad_file_extension"
+msgid "This file extension is not supported"
+msgstr "Это расширение файла не поддерживается"
+
+msgctxt "Languages::cp_specific_products"
+msgid "Select specific products from the list"
+msgstr "Выберите конкретные товары из списка"
+
+msgctxt "Languages::cp_undefined_product"
+msgid "Not in site directory"
+msgstr "Нет в каталоге сайта"
+
+msgctxt "Languages::cp_variations_modal"
+msgid "Loading (Manufacturer's Article)"
+msgstr "Загрузка (Артикул производителя)"
+
+msgctxt "Languages::cp_load_file_instruction"
+msgid "Use our template or upload your own in xls, csv format"
+msgstr "Используйте наш шаблон или загрузите свой в формате: xls, xlsx, csv"
+
+msgctxt "Languages::cp_load_file"
+msgid "Download template"
+msgstr "Скачать шаблон"
+
+msgctxt "Languages::cp_column_example"
+msgid "Column example"
+msgstr "Пример колонок"
+
+msgctxt "Languages::cp_import_success"
+msgid "Upload was successful!"
+msgstr "Загрузка прошла успешно!"
+
+msgctxt "Languages::cp_warning"
+msgid "Please note that for XLS files only active page of the document will be processed."
+msgstr "Пожалуйста обратите Ваше внимание на то, что для файлов будет обработана открытая перед сохранением страница."
+
+msgctxt "Languages::cp_bad_table"
+msgid "Nothing found in the store directory. Check the column order of your table and try again."
+msgstr "Ничего не найдено в каталоге магазина. Проверьте очередность колонок Вашей таблицы и попробуйте снова."
+
+msgctxt "Languages::cp_error_upload_file"
+msgid "File upload error."
+msgstr "Ошибка загрузки файла."
+
+msgctxt "Languages::cp_upload_template"
+msgid "Order template import"
+msgstr "Импорт бланка заказа"
+
+msgctxt "Languages::cp_upload_template_menu_description"
+msgid "Loading a template for importing goods into an order"
+msgstr "Загрузка шаблона для импорта товаров в заказ"
+
+msgctxt "Languages::cp_uploaded_templates"
+msgid "Uploaded templates"
+msgstr "Загруженные шаблоны"
+
+msgctxt "Languages::cp_template_default"
+msgid "Default template"
+msgstr "Шаблон по умолчанию"
+
+msgctxt "Languages::cp_add_template"
+msgid "Add template"
+msgstr "Добавление шаблона"
+
+msgctxt "Languages::cp_import_template"
+msgid "Upload template"
+msgstr "Загрузить шаблон"
+
+msgctxt "Languages::load_template_file"
+msgid "Load order template"
+msgstr "Импортировать из файла"
+
+msgctxt "Languages::unload_template_file"
+msgid "Unload order template"
+msgstr "Экспортировать в файл"
+
+msgctxt "Languages::wrong_column_name"
+msgid "Wrong column index given [column_name]"
+msgstr "Неверный номер столбца [column_name]"
