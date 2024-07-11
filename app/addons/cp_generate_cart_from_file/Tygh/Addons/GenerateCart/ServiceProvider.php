@@ -32,6 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
+
         $app['template.document.gift_certificate.type'] = function ($app) {
             return new Type($app['template.document.repository'], $app['db'], $app['template.renderer'], $app['template.variable_collection_factory']);
         };

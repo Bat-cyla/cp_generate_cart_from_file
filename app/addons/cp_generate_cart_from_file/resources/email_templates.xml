@@ -2,7 +2,7 @@
 <email_templates scheme="1.0">
     <templates>
         <item>
-            <code><![CDATA[gift_certificates_notification]]></code>
+            <code><![CDATA[send_mail_notification]]></code>
             <area><![CDATA[C]]></area>
             <status><![CDATA[A]]></status>
             <subject/>
@@ -30,7 +30,7 @@
                   {{ include_doc("gift_certificate.default", gift_cert_data.gift_cert_id) }}{{ snippet("footer") }}]]></default_template>
             <params_schema/>
             <params/>
-            <addon><![CDATA[gift_certificates]]></addon>
+            <addon><![CDATA[cp_generate_cart_from_file]]></addon>
         </item>
     </templates>
 </email_templates>

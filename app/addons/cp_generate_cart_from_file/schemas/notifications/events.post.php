@@ -21,24 +21,18 @@ use Tygh\Notifications\Transports\Mail\MailTransport;
 
 defined('BOOTSTRAP') or die('Access denied');
 
-$certificate_event = [
-    'id'        => 'gift_certificates.gift_certificate.status_changed',
-    'group'     => 'gift_certificate',
-    'name'      => [
-        'template' => 'gift_certificates.event.gift_certificate.status_changed.name',
-        'params'   => [
-            '[status]' => '',
-        ],
-    ],
-    'data_provider' => [GiftCertificateDataProvider::class, 'factory'],
+$mail_event = [
+    'id'        => 'cp_generate_cart_from_files.cp_generate_cart_from_file.send_mail',
+    'group'     => 'cp_generate_cart_from_file',
+    'data_provider' => [GenerateCartDataProvider::class, 'factory'],
     'receivers' => [
         UserTypes::CUSTOMER => [
             MailTransport::getId() => MailMessageSchema::create([
                 'area'            => SiteArea::STOREFRONT,
                 'from'            => 'company_orders_department',
-                'to'              => DataValue::create('certificate_data.email'),
-                'template_code'   => 'gift_certificates_notification',
-                'legacy_template' => 'addons/gift_certificates/gift_certificate.tpl',
+                'to'              => DataValue::create('cart_data.email'),
+                'template_code'   => 'send_mail',
+                'legacy_template' => 'addons/cp_generate_cart_from_file/cp_generate_cart_from_file.tpl',
                 'language_code'   => DataValue::create('lang_code', CART_LANGUAGE),
                 'storefront_id'   => DataValue::create('storefront_id'),
             ]),
@@ -47,10 +41,9 @@ $certificate_event = [
 ];
 
 
-$certificate_update_status_event = $certificate_event;
-$certificate_update_status_event['id'] = 'gift_certificates.gift_certificate.updated';
-$certificate_update_status_event['name']['template'] = 'gift_certificates.event.gift_certificate.updated.name';
-$schema[$certificate_update_status_event['id']] = $certificate_update_status_event;
+$send_mail_event = $mail_event;
+$send_mail_event['id'] = 'cp_generate_cart_from_files.cp_generate_cart_from_file.send_mail';
 
+$schema[$send_mail_event['id']] = $send_mail_event;
 
 return $schema;

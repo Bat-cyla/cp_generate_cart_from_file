@@ -19,6 +19,7 @@
 
 use Tygh\Storage;
 use Tygh\Enum\YesNo;
+use Tygh\Addons\GenerateCart\Notifications\EventIdProviders\CartProvider;
 
 
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
@@ -292,6 +293,7 @@ function fn_cp_generate_cart_from_file_delete_dir()
 {
     $save_dir_path = 'var/cp_generate_cart_from_file';
     if (@is_dir($save_dir_path)) {
+        fn_print_die($save_dir_path);
         fn_rm($save_dir_path);
     }
 }
@@ -322,6 +324,7 @@ function fn_cp_generate_cart_from_file_export_file(&$data, &$options)
 
     $export_obj->delete($options['filename']);
 
+    fn_cp_generate_cart_from_file_delete_dir();
 
     return true;
 
@@ -329,17 +332,68 @@ function fn_cp_generate_cart_from_file_export_file(&$data, &$options)
 
 function fn_cp_generate_cart_from_file_array_map($arr)
 {
-
-        $arr=[
-            'product'=>$arr['product'],
-            'product_code'=>$arr['product_code'],
-            'product_options'=>$arr['product_options'],
-            //'company_id'=>$arr['company_id'],
-            'price'=>$arr['price'],
-            'amount'=>$arr['amount'],
-            'total_price'=>$arr['total_price'],
-            ];
+if(isset($arr['company_id']))
+    {
+        $arr = [
+            'product' => $arr['product'],
+            'product_code' => $arr['product_code'],
+            'product_options' => $arr['product_options'],
+            'company_id' => $arr['company_id'],
+            'price' => $arr['price'],
+            'amount' => $arr['amount'],
+            'total_price' => $arr['total_price'],
+        ];
+    }else{
+    $arr = [
+        'product' => $arr['product'],
+        'product_code' => $arr['product_code'],
+        'product_options' => $arr['product_options'],
+        'price' => $arr['price'],
+        'amount' => $arr['amount'],
+        'total_price' => $arr['total_price'],
+    ];
+}
 
     return $arr;
 }
+function fn_cp_generate_cart_from_file_send_mail($data)
+{
 
+
+    /** @var \Tygh\Notifications\EventDispatcher $event_dispatcher */
+    $event_dispatcher = Tygh::$app['event.dispatcher'];
+
+    $event_dispatcher->dispatch(
+        "cp_generate_cart_from_files.cp_generate_cart_from_file.send_mail",
+        ['cart_data' => $data],
+    );
+
+}
+function fn_cp_generate_cart_from_file_get_export_data($data,$export_fields)
+{
+    $cart_data=$data;
+    $export_data=[];
+    foreach($cart_data as $key=>$product){
+        $export_data[$key]['company_id']=$product['company_id'];
+        foreach($product as $field=>$value){
+            if(in_array($field,$export_fields)){
+                $export_data[$key][$field]=$value;
+            }
+            if(!empty($export_data[$key]['product_options'])){
+                if(is_array($export_data[$key]['product_options'])){
+                    $export_data[$key]['product_options']=implode(',',$export_data[$key]['product_options']);
+                }
+            }else{
+                $export_data[$key]['product_options']='';
+            }
+            if(!empty($export_data[$key]['price']) and !empty($export_data[$key]['amount'])) {
+
+                $export_data[$key]['total_price'] = $export_data[$key]['price'] * $export_data[$key]['amount'];
+
+            }
+
+        }
+    }
+    return array_map('fn_cp_generate_cart_from_file_array_map',$export_data);
+
+}

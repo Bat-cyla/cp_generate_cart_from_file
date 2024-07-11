@@ -21,7 +21,6 @@
                             <label for="emailField"></label>
                         </form>
                         {include file="buttons/button.tpl" but_role="submit" but_text=__("send") but_name="dispatch[cp_generate_cart_export_file.send_mail]" but_meta="ty-btn__primary cm-process-items cm-dialog-closer" but_target_form="email_address"}
-
                     </div>
                 </div>
             </div>

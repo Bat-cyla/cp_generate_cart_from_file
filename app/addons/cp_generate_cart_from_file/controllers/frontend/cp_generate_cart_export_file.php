@@ -2,7 +2,7 @@
 
 use Tygh\Registry;
 use Tygh\Tygh;
-use Tygh\Addons\GenerateCart\Notifications\EventIdProviders\CartProvider;
+
 
 
 if (!defined('BOOTSTRAP')) {
@@ -38,33 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'price',
                     'amount',
                 ];
-
-                if(isset($cart_data['company_id'])){
+                if(fn_allowed_for('MULTIVENDOR')){
                     $export_fields[]= 'company_id';
                 }
 
-                $export_data=[];
-                foreach($cart_data as $key=>$product){
-                    foreach($product as $field=>$value){
-                        if(in_array($field,$export_fields)){
-                            $export_data[$key][$field]=$value;
-                        }
-                        if(!empty($export_data[$key]['product_options'])){
-                            if(is_array($export_data[$key]['product_options'])){
-                                $export_data[$key]['product_options']=implode(',',$export_data[$key]['product_options']);
-                            }
-                        }else{
-                            $export_data[$key]['product_options']='';
-                        }
-                        if(!empty($export_data[$key]['price']) and !empty($export_data[$key]['amount'])) {
-                            $export_data[$key]['total_price'] = $export_data[$key]['price'] * $export_data[$key]['amount'];
-                        }else{
-                            $export_data[$key]['total_price']=0;
-                        }
-
-                    }
-                }
-                $export_data=array_map('fn_cp_generate_cart_from_file_array_map',$export_data);
+                $export_data=fn_cp_generate_cart_from_file_get_export_data($cart_data,$export_fields);
                 fn_cp_generate_cart_from_file_export_file($export_data, $options);
             }
         }
@@ -73,42 +51,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     }elseif($mode='send_mail'){
 
-        $params=[
-            'gift_cert_id' => 1,
-            'gift_cert_data' =>
-        [
-            'gift_cert_code' => 'GC-EFTB-VA7U-J035',
-            'status' => 'A',
-            'company_id' => 0,
-            'recipient' => 'qweq',
-            'sender' => 'qweqwe',
-            'message' => '',
-            'amount' => 50,
-            'send_via' => 'E',
-            'email' => 'cp.nemov@gmail.com',
-            'template' => 'default.tpl',
-        ],
+        $data=[];
 
-        'certificate_status' => 'A',
-        'security_hash' => 'd83c8e9df6ef9587c66a45287956b413',
-        'dispatch' => 'gift_certificates.update'
-        ];
-        $force_notification = fn_get_notification_rules($params);
-        /** @var \Tygh\Notifications\EventDispatcher $event_dispatcher */
-        $event_dispatcher = Tygh::$app['event.dispatcher'];
-
-        /** @var \Tygh\Notifications\Settings\Factory $notification_settings_factory */
-        $notification_settings_factory = Tygh::$app['event.notification_settings.factory'];
-        $notification_rules = $notification_settings_factory->create($force_notification);
-
-        $event_dispatcher->dispatch(
-            "gift_certificates.gift_certificate.updated",
-            ['certificate_data' => $data],
-            $notification_rules,
-            new CartProvider($data)
-        );
+        if(!empty($cart)) {
+            $product_data = $cart['products'];
+            foreach ($product_data as $product) {
+                $cart_data[] = $product;
+            }
+            fn_cp_generate_cart_from_file_send_mail($data);
 
 
+            return [CONTROLLER_STATUS_OK, 'checkout.cart'];
+        }
     }
 }
 if ($mode == 'view') {
