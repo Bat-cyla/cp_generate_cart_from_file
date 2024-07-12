@@ -20,6 +20,7 @@
 use Tygh\Storage;
 use Tygh\Enum\YesNo;
 use Tygh\Addons\GenerateCart\Notifications\EventIdProviders\CartProvider;
+use Tygh\Mailer\Mailer;
 
 
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
@@ -298,8 +299,13 @@ function fn_cp_generate_cart_from_file_delete_dir()
     }
 }
 
-function fn_cp_generate_cart_from_file_export_file(&$data, &$options)
+function fn_cp_generate_cart_from_file_export_file($data)
 {
+    $options=[
+        'delimiter'=> ";",
+        'filename'=> "cart.csv",
+        'price_dec_sign_delimiter'=>"."
+    ];
     $data=array_map('fn_cp_generate_cart_from_file_array_map',$data);
 
     $delimiter=$options['delimiter'];
@@ -352,20 +358,23 @@ if(isset($arr['company_id']))
         'amount' => $arr['amount'],
         'total_price' => $arr['total_price'],
     ];
+
 }
 
     return $arr;
 }
-function fn_cp_generate_cart_from_file_send_mail($data)
+function fn_cp_generate_cart_from_file_send_mail($data,$cart_data)
 {
-
 
     /** @var \Tygh\Notifications\EventDispatcher $event_dispatcher */
     $event_dispatcher = Tygh::$app['event.dispatcher'];
 
+
     $event_dispatcher->dispatch(
         "cp_generate_cart_from_files.cp_generate_cart_from_file.send_mail",
         ['cart_data' => $data],
+
+
     );
 
 }
@@ -396,4 +405,8 @@ function fn_cp_generate_cart_from_file_get_export_data($data,$export_fields)
     }
     return array_map('fn_cp_generate_cart_from_file_array_map',$export_data);
 
+}
+function fn_cp_generate_cart_from_file_mailer_send_pre(&$mailer,$transport, $message, $area, $lang_code)
+{
+    fn_print_die(1111);
 }

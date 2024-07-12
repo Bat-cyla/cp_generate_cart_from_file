@@ -26,11 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         if(isset($_REQUEST['format'])){
             if($_REQUEST['format']=='csv_table'){
-                $options=[
-                    'delimiter'=> ";",
-                    'filename'=> "cart.csv",
-                    'price_dec_sign_delimiter'=>"."
-                ];
                 $export_fields=[
                     'product',
                     'product_code',
@@ -43,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
 
                 $export_data=fn_cp_generate_cart_from_file_get_export_data($cart_data,$export_fields);
-                fn_cp_generate_cart_from_file_export_file($export_data, $options);
+                fn_cp_generate_cart_from_file_export_file($export_data);
             }
         }
 
@@ -51,18 +46,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     }elseif($mode='send_mail'){
 
-        $data=[];
+        if($_REQUEST['format']=='csv_table'){
+            if(!empty($cart)) {
+                $product_data = $cart['products'];
+                foreach ($product_data as $product) {
+                    $cart_data[] = $product;
+                }
+                $data['email']=$_REQUEST['email'];
+                fn_cp_generate_cart_from_file_send_mail($data,$cart_data);
 
-        if(!empty($cart)) {
-            $product_data = $cart['products'];
-            foreach ($product_data as $product) {
-                $cart_data[] = $product;
             }
-            fn_cp_generate_cart_from_file_send_mail($data);
-
-
-            return [CONTROLLER_STATUS_OK, 'checkout.cart'];
         }
+
+        return [CONTROLLER_STATUS_OK, 'checkout.cart'];
     }
 }
 if ($mode == 'view') {

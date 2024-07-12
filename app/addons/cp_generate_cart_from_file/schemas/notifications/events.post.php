@@ -18,6 +18,9 @@ use Tygh\Addons\GenerateCart\Notifications\DataProviders\GenerateCartDataProvide
 use Tygh\Notifications\Transports\Mail\MailMessageSchema;
 use Tygh\Enum\UserTypes;
 use Tygh\Notifications\Transports\Mail\MailTransport;
+use Tygh\Mailer\Message;
+
+
 
 defined('BOOTSTRAP') or die('Access denied');
 
@@ -34,7 +37,6 @@ $mail_event = [
                 'template_code'   => 'send_mail',
                 'legacy_template' => 'addons/cp_generate_cart_from_file/cp_generate_cart_from_file.tpl',
                 'language_code'   => DataValue::create('lang_code', CART_LANGUAGE),
-                'storefront_id'   => DataValue::create('storefront_id'),
             ]),
         ],
     ],
@@ -42,6 +44,7 @@ $mail_event = [
 
 
 $send_mail_event = $mail_event;
+
 $send_mail_event['id'] = 'cp_generate_cart_from_files.cp_generate_cart_from_file.send_mail';
 
 $schema[$send_mail_event['id']] = $send_mail_event;
