@@ -13,7 +13,7 @@
         <php_version>
             <min>7.4.0</min>
         </php_version>
-        <dependencies>price_list</dependencies>
+        <dependencies>price_list,pdf_documents</dependencies>
     </compatibility>
     <authors>
         <author>

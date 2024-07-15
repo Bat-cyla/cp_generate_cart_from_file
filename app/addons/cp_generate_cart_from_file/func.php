@@ -20,7 +20,10 @@
 use Tygh\Storage;
 use Tygh\Enum\YesNo;
 use Tygh\Addons\GenerateCart\Notifications\EventIdProviders\CartProvider;
-use Tygh\Mailer\Mailer;
+use Tygh\Mailer\Message;
+use Tygh\Addons\PdfDocuments\Pdf;
+
+
 
 
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
@@ -261,7 +264,7 @@ function fn_cp_generate_cart_from_file_get_attachment(int $attachment_id) : bool
     }
 
     $attachment_obj = Storage::instance('cp_generate_cart_from_file');
-    fn_print_die($attachment_obj);
+
     $attachment_filename = $data['template_id'] . '/' . $data['filename'];
 
     if (!$attachment_obj->isExist($attachment_filename)) {
@@ -294,21 +297,20 @@ function fn_cp_generate_cart_from_file_delete_dir()
 {
     $save_dir_path = 'var/cp_generate_cart_from_file';
     if (@is_dir($save_dir_path)) {
-        fn_print_die($save_dir_path);
+
         fn_rm($save_dir_path);
     }
 }
 
-function fn_cp_generate_cart_from_file_export_file($data)
+function fn_cp_generate_cart_from_file_generate_csv_file($data)
 {
-    $options=[
-        'delimiter'=> ";",
-        'filename'=> "cart.csv",
-        'price_dec_sign_delimiter'=>"."
+    $options = [
+        'delimiter' => ";",
+        'filename' => "cart.csv",
     ];
-    $data=array_map('fn_cp_generate_cart_from_file_array_map',$data);
+    $data = array_map('fn_cp_generate_cart_from_file_array_map', $data);
 
-    $delimiter=$options['delimiter'];
+    $delimiter = $options['delimiter'];
     $eol = "\n";
 
 
@@ -319,21 +321,24 @@ function fn_cp_generate_cart_from_file_export_file($data)
     $csv = Tygh::$app['view']->fetch('design/backend/templates/views/exim/components/export_csv.tpl');
 
     fn_mkdir('var/cp_generate_cart_from_file');
-    file_put_contents('var/cp_generate_cart_from_file/'.$options['filename'],$csv);
+    file_put_contents('var/cp_generate_cart_from_file/' . $options['filename'], $csv);
+    return $options['filename'];
+}
+function fn_cp_generate_cart_from_file_export_file($filename)
+{
     $export_obj= Storage::instance('cp_generate_cart_from_file');
 
-    if(!$export_obj->isExist($options['filename'])){
+    if(!$export_obj->isExist($filename)){
         return false;
     }
 
-    $export_obj->get($options['filename']);
+    $export_obj->get($filename);
 
-    $export_obj->delete($options['filename']);
+    $export_obj->delete($filename);
 
-    fn_cp_generate_cart_from_file_delete_dir();
+
 
     return true;
-
 }
 
 function fn_cp_generate_cart_from_file_array_map($arr)
@@ -363,7 +368,7 @@ if(isset($arr['company_id']))
 
     return $arr;
 }
-function fn_cp_generate_cart_from_file_send_mail($data,$cart_data)
+function fn_cp_generate_cart_from_file_send_mail($data)
 {
 
     /** @var \Tygh\Notifications\EventDispatcher $event_dispatcher */
@@ -373,13 +378,21 @@ function fn_cp_generate_cart_from_file_send_mail($data,$cart_data)
     $event_dispatcher->dispatch(
         "cp_generate_cart_from_files.cp_generate_cart_from_file.send_mail",
         ['cart_data' => $data],
-
-
     );
 
 }
-function fn_cp_generate_cart_from_file_get_export_data($data,$export_fields)
+function fn_cp_generate_cart_from_file_get_export_data($data)
 {
+    $export_fields=[
+        'product',
+        'product_code',
+        'product_options',
+        'price',
+        'amount',
+    ];
+    if(fn_allowed_for('MULTIVENDOR')){
+        $export_fields[]= 'company_id';
+    }
     $cart_data=$data;
     $export_data=[];
     foreach($cart_data as $key=>$product){
@@ -406,7 +419,28 @@ function fn_cp_generate_cart_from_file_get_export_data($data,$export_fields)
     return array_map('fn_cp_generate_cart_from_file_array_map',$export_data);
 
 }
-function fn_cp_generate_cart_from_file_mailer_send_pre(&$mailer,$transport, $message, $area, $lang_code)
+function fn_cp_generate_cart_from_file_mailer_send_pre($mailer,$transport, Message $message, $area, $lang_code)
 {
-    fn_print_die(1111);
+        $message->addAttachment('var/cp_generate_cart_from_file/cart.csv','cart.csv');
+}
+
+function fn_cp_generate_cart_from_file_generate_pdf_file($data)
+{
+    $export_fields=[
+        'product',
+        'product_code',
+        'product_options',
+        'price',
+        'amount',
+    ];
+    $html='';
+    foreach($data as $product){
+        foreach($product as $field){
+            $html.="<td>".$field . '</td>';
+        }
+    }
+    $html="<HTML><table>".$html."</table></HTML>";
+    $pdf=Pdf::render($html);
+    fn_print_die($pdf);
+
 }

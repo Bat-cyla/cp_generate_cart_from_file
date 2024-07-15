@@ -16,8 +16,8 @@
 
                     <div class="buttons-container">
                         {include file="buttons/button.tpl" but_role="submit" but_text=__("download") but_name="dispatch[cp_generate_cart_export_file.generate]" but_meta="ty-btn__primary cm-process-items cm-dialog-closer" but_target_form="cp_unload_file_form"}
-                        <form action="{""|fn_url}" method="post" name="email" class="form-horizontal " enctype="multipart/form-data">
-                            <input type="email" id="emailField" name="email">
+                        <form action="{""|fn_url}" method="post" name="email" class="form-horizontal" enctype="multipart/form-data">
+                            <input type="email" id="emailField" name="email" class="cp-email-field">
                             <label for="emailField"></label>
                         </form>
                         {include file="buttons/button.tpl" but_role="submit" but_text=__("send") but_name="dispatch[cp_generate_cart_export_file.send_mail]" but_meta="ty-btn__primary cm-process-items cm-dialog-closer" but_target_form="email_address"}

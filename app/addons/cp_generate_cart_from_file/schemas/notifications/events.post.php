@@ -34,7 +34,7 @@ $mail_event = [
                 'area'            => SiteArea::STOREFRONT,
                 'from'            => 'company_orders_department',
                 'to'              => DataValue::create('cart_data.email'),
-                'template_code'   => 'send_mail',
+                'template_code'   => 'send_mail_notification',
                 'legacy_template' => 'addons/cp_generate_cart_from_file/cp_generate_cart_from_file.tpl',
                 'language_code'   => DataValue::create('lang_code', CART_LANGUAGE),
             ]),

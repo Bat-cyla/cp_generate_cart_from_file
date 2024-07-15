@@ -96,6 +96,10 @@ msgctxt "Languages::cp_undefined_product"
 msgid "Not in site directory"
 msgstr "Нет в каталоге сайта"
 
+msgctxt "Languages::cp_your_cart"
+msgid "Your cart"
+msgstr "Ваша корзина"
+
 msgctxt "Languages::cp_variations_modal"
 msgid "Loading (Manufacturer's Article)"
 msgstr "Загрузка (Артикул производителя)"
