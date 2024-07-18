@@ -18,6 +18,7 @@
 ******************************************************************************/
 
 use Tygh\Storage;
+use Tygh\Registry;
 use Tygh\Enum\YesNo;
 use Tygh\Addons\GenerateCart\Notifications\EventIdProviders\CartProvider;
 use Tygh\Mailer\Message;
@@ -293,39 +294,62 @@ function fn_cp_generate_cart_from_file_get_default_template_data () : array
     }
 }
 
+function fn_cp_generate_cart_from_file_delete_file($filename)
+{
+
+    $export_obj = Storage::instance('cp_generate_cart_from_file');
+    if ($export_obj->isExist($filename)) {
+        $export_obj->delete($filename);
+    }
+}
 function fn_cp_generate_cart_from_file_delete_dir()
 {
     $save_dir_path = 'var/cp_generate_cart_from_file';
     if (@is_dir($save_dir_path)) {
-
         fn_rm($save_dir_path);
     }
 }
 
+
 function fn_cp_generate_cart_from_file_generate_csv_file($data)
 {
-    $options = [
-        'delimiter' => ";",
-        'filename' => "cart.csv",
-    ];
+    $cp_dir=Registry::get('config.dir.var');
+    $cp_prefix=Registry::get('config.storage.cp_generate_cart_from_file.prefix');
+    $cp_export_dir=$cp_dir.$cp_prefix;
+
     $data = array_map('fn_cp_generate_cart_from_file_array_map', $data);
 
-    $delimiter = $options['delimiter'];
+    fn_mkdir($cp_export_dir);
+    $delimiter = ';';
     $eol = "\n";
+    $field_names=[
+        __('cp_product'),
+        __('cp_product_code'),
+        __('cp_product_options'),
+        __('cp_vendor'),
+        __('cp_price'),
+        __('cp_amount'),
+        __('cp_total_price'),
+    ];
 
 
-    Tygh::$app['view']->assign('fields', array_keys($data[0]));
+    Tygh::$app['view']->assign('fields', $field_names);
     Tygh::$app['view']->assign('export_data', $data);
     Tygh::$app['view']->assign('delimiter', $delimiter);
     Tygh::$app['view']->assign('eol', $eol);
     $csv = Tygh::$app['view']->fetch('design/backend/templates/views/exim/components/export_csv.tpl');
 
-    fn_mkdir('var/cp_generate_cart_from_file');
-    file_put_contents('var/cp_generate_cart_from_file/' . $options['filename'], $csv);
-    return $options['filename'];
+    $export_obj= Storage::instance('cp_generate_cart_from_file');
+    $filename=$export_obj->generateName('cart.csv');
+
+    file_put_contents($cp_export_dir .'/'. $filename, $csv);
+
+    return $filename;
+
 }
 function fn_cp_generate_cart_from_file_export_file($filename)
 {
+    register_shutdown_function('fn_cp_generate_cart_from_file_delete_file',$filename);
     $export_obj= Storage::instance('cp_generate_cart_from_file');
 
     if(!$export_obj->isExist($filename)){
@@ -334,11 +358,10 @@ function fn_cp_generate_cart_from_file_export_file($filename)
 
     $export_obj->get($filename);
 
-    $export_obj->delete($filename);
-
-
-
     return true;
+
+
+
 }
 
 function fn_cp_generate_cart_from_file_array_map($arr)
@@ -354,6 +377,7 @@ if(isset($arr['company_id']))
             'amount' => $arr['amount'],
             'total_price' => $arr['total_price'],
         ];
+
     }else{
     $arr = [
         'product' => $arr['product'],
@@ -396,14 +420,16 @@ function fn_cp_generate_cart_from_file_get_export_data($data)
     $cart_data=$data;
     $export_data=[];
     foreach($cart_data as $key=>$product){
-        $export_data[$key]['company_id']=$product['company_id'];
         foreach($product as $field=>$value){
+            if(fn_allowed_for('MULTIVENDOR')){
+                $export_data[$key]['company_id']=fn_get_company_name($product['company_id']);
+            }
             if(in_array($field,$export_fields)){
                 $export_data[$key][$field]=$value;
             }
             if(!empty($export_data[$key]['product_options'])){
                 if(is_array($export_data[$key]['product_options'])){
-                    $export_data[$key]['product_options']=implode(',',$export_data[$key]['product_options']);
+                    $export_data[$key]['product_options']= implode(',',$export_data[$key]['product_options']);
                 }
             }else{
                 $export_data[$key]['product_options']='';
@@ -421,26 +447,53 @@ function fn_cp_generate_cart_from_file_get_export_data($data)
 }
 function fn_cp_generate_cart_from_file_mailer_send_pre($mailer,$transport, Message $message, $area, $lang_code)
 {
-        $message->addAttachment('var/cp_generate_cart_from_file/cart.csv','cart.csv');
+
+    $data=$message->getData();
+    $dir=$data['cart_data']['dir'];
+    $filename=$data['cart_data']['filename'];
+        $message->addAttachment($dir.'/'.$filename,$filename);
 }
 
 function fn_cp_generate_cart_from_file_generate_pdf_file($data)
 {
-    $export_fields=[
-        'product',
-        'product_code',
-        'product_options',
-        'price',
-        'amount',
+    $cp_dir=Registry::get('config.dir.var');
+    $cp_prefix=Registry::get('config.storage.cp_generate_cart_from_file.prefix');
+    $cp_export_dir=$cp_dir.$cp_prefix;
+
+    $data = array_map('fn_cp_generate_cart_from_file_array_map', $data);
+    $notice='* на момент формирования заказа цена может измениться.';
+    fn_mkdir($cp_export_dir);
+    $field_names=[
+        __('cp_product'),
+        __('cp_product_code'),
+        __('cp_product_options'),
+        __('cp_vendor'),
+        __('cp_price'),
+        __('cp_amount'),
+        __('cp_total_price'),
     ];
-    $html='';
+    $total_price=0;
+    $html='</thead>';
+    foreach($field_names as $field_name){
+        $html.="<th>{$field_name}</th>";
+    }
+    $html.='</thead> <tbody>';
     foreach($data as $product){
+        $html.='<tr>';
         foreach($product as $field){
             $html.="<td>".$field . '</td>';
+
         }
+        $total_price+=$product['total_price'];
+        $html.='</tr>';
     }
-    $html="<HTML><table>".$html."</table></HTML>";
-    $pdf=Pdf::render($html);
-    fn_print_die($pdf);
+    $html.='</tbody>';
+    $html.="<tfoot><td></td><td></td><td></td><td></td><td></td><td>Итого:</td><td>{$total_price}</td></tfoot>";
+    $html="<HTML><table border='2'>".$html."</table>$notice</HTML>";
+
+
+    Pdf::render($html,$cp_export_dir.'/cart.pdf',true);
+
+    return 'cart.pdf';
 
 }

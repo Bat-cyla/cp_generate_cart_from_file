@@ -80,6 +80,34 @@ msgctxt "Languages::cp_select_files"
 msgid "Select file"
 msgstr "Выберите файл"
 
+msgctxt "Languages::cp_product"
+msgid "Product"
+msgstr "Товар"
+
+msgctxt "Languages::cp_product_code"
+msgid "Product code"
+msgstr "Артикул"
+
+msgctxt "Languages::cp_product_options"
+msgid "Product options"
+msgstr "Выбранные опции"
+
+msgctxt "Languages::cp_vendor"
+msgid "Vendor"
+msgstr "Продавец"
+
+msgctxt "Languages::cp_price"
+msgid "Price"
+msgstr "Цена"
+
+msgctxt "Languages::cp_amount"
+msgid "Amount"
+msgstr "Количество"
+
+msgctxt "Languages::cp_total_price"
+msgid "Total price"
+msgstr "Сумма"
+
 msgctxt "Languages::cp_selected_files"
 msgid "Selected file"
 msgstr "Выбрано файлов"

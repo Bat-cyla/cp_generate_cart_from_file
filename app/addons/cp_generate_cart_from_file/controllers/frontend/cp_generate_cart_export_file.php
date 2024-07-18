@@ -23,36 +23,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $cart_data[]=$product;
             }
         }
+        $export_data=fn_cp_generate_cart_from_file_get_export_data($cart_data);
         if(isset($_REQUEST['format'])){
-            switch($_REQUEST['format']){
-                case 'csv_table':
-                    $export_data=fn_cp_generate_cart_from_file_get_export_data($cart_data);
-                    $file=fn_cp_generate_cart_from_file_generate_csv_file($export_data);
-                    fn_cp_generate_cart_from_file_export_file($file);
-                case 'pdf_cp':
-                    $export_data=fn_cp_generate_cart_from_file_get_export_data($cart_data);
-                    fn_cp_generate_cart_from_file_generate_pdf_file($export_data);
-
+            if($_REQUEST['format']=='pdf_cp'){
+                $file=fn_cp_generate_cart_from_file_generate_pdf_file($export_data);
+            }elseif($_REQUEST['format']=='csv_table'){
+                $file=fn_cp_generate_cart_from_file_generate_csv_file($export_data);
             }
+            fn_cp_generate_cart_from_file_export_file($file);
         }
-
         return [CONTROLLER_STATUS_OK, 'checkout.cart'];
-    }elseif($mode='send_mail'){
+    }
+    elseif($mode='send_mail'){
         if (!empty($cart)) {
             $product_data = $cart['products'];
             foreach ($product_data as $product) {
                 $cart_data[] = $product;
             }
+            $export_data = fn_cp_generate_cart_from_file_get_export_data($cart_data);
             $data['email'] = $_REQUEST['email'];
+            $data['dir']=Registry::get('config.dir.var').Registry::get('config.storage.cp_generate_cart_from_file.prefix');
                 if(isset($_REQUEST['format'])) {
-                    switch ($_REQUEST['format']) {
-                        case 'csv_table':
-                            $export_data = fn_cp_generate_cart_from_file_get_export_data($cart_data);
-                            $file = fn_cp_generate_cart_from_file_generate_file($export_data);
-                            fn_cp_generate_cart_from_file_send_mail($data);
-                        case 'pdf_cp':
-                    //TODO: Сделать PDF экспорт
-            }
+                    if($_REQUEST['format']=='pdf_cp'){
+                        $data['filename']=fn_cp_generate_cart_from_file_generate_pdf_file($export_data);
+                    }elseif($_REQUEST['format']=='csv_table'){
+                        $data['filename']=fn_cp_generate_cart_from_file_generate_csv_file($export_data);
+                    }
+                    fn_cp_generate_cart_from_file_send_mail($data);
+                    fn_cp_generate_cart_from_file_delete_file($data['filename']);
             }
         }
     return [CONTROLLER_STATUS_OK, 'checkout.cart'];
