@@ -80,6 +80,10 @@ msgctxt "Languages::cp_select_files"
 msgid "Select file"
 msgstr "Выберите файл"
 
+msgctxt "Languages::cp_load_products_from_file"
+msgid "Load products from file"
+msgstr "Загрузить товары из файла"
+
 msgctxt "Languages::cp_product"
 msgid "Product"
 msgstr "Товар"
@@ -111,6 +115,10 @@ msgstr "Сумма"
 msgctxt "Languages::cp_selected_files"
 msgid "Selected file"
 msgstr "Выбрано файлов"
+
+msgctxt "Languages::cp_export_pdf"
+msgid "Form a commercial offer in PDF"
+msgstr "Сформировать КП в PDF"
 
 msgctxt "Languages::cp_bad_file_extension"
 msgid "This file extension is not supported"
