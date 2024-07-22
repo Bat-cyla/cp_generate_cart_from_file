@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             if (!empty($res)) {
+
                 list($variations, $cart_data, $undefined_products) = fn_cp_generate_cart_from_file_check_products($res);
             } else {
                 Tygh::$app['ajax']->assign('non_ajax_notifications', true);
@@ -62,13 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             if (!empty($variations) || !empty($undefined_products)) {
+                $ajax=Tygh::$app['ajax'];
                 $view->assign([
-                    'variations' => $variations,
-                    'undefined_products' => $undefined_products,
+                    'variations'=>$variations,
+                    'undefined_products'=>$undefined_products,
                 ]);
-                $view->display('addons/cp_generate_cart_from_file/views/variations.tpl');
-
-
+                $content = $view->fetch('addons/cp_generate_cart_from_file/views/variations.tpl');
+                $ajax->assign('content',$content);
+                $ajax->assign('variations_popup',true);
+                exit();
             } else {
                 Tygh::$app['ajax']->assign('non_ajax_notifications', true);
                 fn_set_notification('N', __('notice'), __("cp_import_success"));
@@ -99,12 +102,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 if ($mode == 'view') {
-
+    //fn_print_die($_REQUEST);
     $template_data = fn_cp_generate_cart_from_file_get_default_template_data();
     $view->assign([
         'template_data' => $template_data,
     ]);
     $view->display('addons/cp_generate_cart_from_file/views/view.tpl');
+
 }elseif($mode == 'export'){
-    fn_print_die(1111);
+    if(!empty($cart)){
+        $product_data=$cart['products'];
+        foreach($product_data as $product){
+            $cart_data[]=$product;
+        }
+    }
+    if(empty($cart_data)){
+        return [CONTROLLER_STATUS_OK, "order_management.update"];
+    }
+    $export_data=fn_cp_generate_cart_from_file_get_export_data($cart_data);
+    $file=fn_cp_generate_cart_from_file_generate_pdf_file($export_data);
+    fn_cp_generate_cart_from_file_export_file($file);
 }

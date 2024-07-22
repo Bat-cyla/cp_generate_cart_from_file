@@ -54,12 +54,9 @@
             </div>
         </fieldset>
         <div class="buttons-container">
-            {include file="buttons/button.tpl" but_role="submit" but_text=__("load") but_name="dispatch[order_management.generate]" but_meta="cp-submit ty-btn__primary cm-process-items cm-dialog-closer" but_target_form="cp_upload_file_form"}
+            {include file="buttons/button.tpl" but_role="submit" type="dialog" but_text=__("load") but_name="dispatch[order_management.generate]" but_meta="cp-submit ty-btn__primary cm-process-items cm-dialog-closer" but_target_form="cp_upload_file_form"}
             <span class="ty-close-text"><a class="cm-dialog-closer ty-btn ty-float-right">{__("cancel")}</a></span>
         </div>
     </form>
 
-    <script>
-        $('#cp_generate_cart_open_modal_link').click();
-    </script>
     <!--cp_generate_cart_modal--></div>

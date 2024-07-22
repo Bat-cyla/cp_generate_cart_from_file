@@ -1,4 +1,5 @@
-<div id="cp_variations_modal">
+<div class="cm-dialog-auto-open" id="cp_variations_modal" >
+
     <form action="{""|fn_url}" method="POST" name="cp_variations_modal_form" class="form-horizontal cm-ajax" enctype="multipart/form-data">
         <input type="hidden" class="cp-variation-modal"/>
         <fieldset>
@@ -74,7 +75,6 @@
             {include file="buttons/button.tpl" but_role="submit" but_text=__("ok") but_name="dispatch[order_management.finish]" but_meta="ty-btn__primary cm-process-items cm-dialog-closer ty-float-right" but_target_form="cp_variations_modal_form"}
         </div>
     </form>
-
     <script>
         $('#cp_variations_open_modal_link').click();
     </script>

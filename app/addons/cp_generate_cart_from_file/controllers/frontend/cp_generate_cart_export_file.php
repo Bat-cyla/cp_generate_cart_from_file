@@ -16,7 +16,6 @@ $auth = &Tygh::$app['session']['auth'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'generate') {
-
         if(!empty($cart)){
             $product_data=$cart['products'];
             foreach($product_data as $product){

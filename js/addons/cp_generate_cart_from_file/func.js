@@ -14,6 +14,7 @@
         context.find('li.cp-generate-cart-page-link').on('click', function() {
             ajaxGetModal();
         });
+
         context.find('input.cp-upload-file').change(function() {
             filename = $(this).val().replace(/.*\\/, "");
             if (field_amount != '' && field_artiqle != '' && filename != '') {
@@ -89,5 +90,7 @@
             caching : false,
         });
     }
+
+
 
 })(Tygh, Tygh.$);
