@@ -1,7 +1,25 @@
 <?php
+/*****************************************************************************
+ *                                                        © 2013 Cart-Power   *
+ *           __   ______           __        ____                             *
+ *          / /  / ____/___ ______/ /_      / __ \____ _      _____  _____    *
+ *      __ / /  / /   / __ `/ ___/ __/_____/ /_/ / __ \ | /| / / _ \/ ___/    *
+ *     / // /  / /___/ /_/ / /  / /_/_____/ ____/ /_/ / |/ |/ /  __/ /        *
+ *    /_//_/   \____/\__,_/_/   \__/     /_/    \____/|__/|__/\___/_/         *
+ *                                                                            *
+ *                                                                            *
+ * -------------------------------------------------------------------------- *
+ * This is commercial software, only users who have purchased a valid license *
+ * and  accept to the terms of the License Agreement can install and use this *
+ * program.                                                                   *
+ * -------------------------------------------------------------------------- *
+ * website: https://store.cart-power.com                                      *
+ * email:   sales@cart-power.com                                              *
+ ******************************************************************************/
 
 use Tygh\Registry;
 use Tygh\Tygh;
+use Tygh\Enum\YesNo;
 
 
 
@@ -60,12 +78,13 @@ if ($mode == 'view') {
         if (empty($auth['user_id'])) {
             Tygh::$app['ajax']->assign('force_redirection', fn_url('auth.login_form'));
         } else {
-            $cp_pdf_option= Registry::get('addons.cp_generate_cart_from_file.PDF_export');
-            $cp_csv_option= Registry::get('addons.cp_generate_cart_from_file.CSV_export');
-            if($cp_pdf_option=='Y' and $cp_csv_option=='Y'){
+            $cp_option= Registry::get('addons.cp_generate_cart_from_file');
+            if($cp_option['PDF_export']==YesNo::YES and $cp_option['CSV_export']==YesNo::YES){
                 $export_format='pdf_csv';
+            }elseif($cp_option['PDF_export']==YesNo::NO and $cp_option['CSV_export']==YesNo::NO){
+                fn_set_notification("W",__('warning'), __('cp_warning_format'));
             }else{
-                $cp_csv_option=='Y'?$export_format='csv_table':$export_format='pdf_cp';
+                $cp_option['PDF_export']==YesNo::YES?$export_format='pdf_cp':$export_format='csv_table';
             }
                 Tygh::$app['view']->assign([
                     'export_format'=> $export_format,

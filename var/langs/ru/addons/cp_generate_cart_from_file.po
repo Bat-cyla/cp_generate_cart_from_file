@@ -120,6 +120,14 @@ msgctxt "Languages::cp_export_pdf"
 msgid "Form a commercial offer in PDF"
 msgstr "Сформировать КП в PDF"
 
+msgctxt "Languages::warning"
+msgid "Warning."
+msgstr "Внимание."
+
+msgctxt "Languages::cp_warning_format"
+msgid "No export format has been selected. Select the format in the addon settings."
+msgstr "Формат экспорта не выбран. Выберите формат в настройках модуля."
+
 msgctxt "Languages::cp_bad_file_extension"
 msgid "This file extension is not supported"
 msgstr "Это расширение файла не поддерживается"
@@ -199,6 +207,10 @@ msgstr "Импортировать из файла"
 msgctxt "Languages::unload_template_file"
 msgid "Unload order template"
 msgstr "Экспортировать в файл"
+
+msgctxt "Languages::cp_notice"
+msgid "* at the time of placing an order, the price may change"
+msgstr "* на момент формирования заказа цена может измениться."
 
 msgctxt "Languages::wrong_column_name"
 msgid "Wrong column index given [column_name]"

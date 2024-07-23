@@ -313,10 +313,8 @@ function fn_cp_generate_cart_from_file_delete_dir()
 
 function fn_cp_generate_cart_from_file_generate_csv_file($data)
 {
-    $cp_dir=Registry::get('config.dir.var');
-    $cp_prefix=Registry::get('config.storage.cp_generate_cart_from_file.prefix');
-    $cp_export_dir=$cp_dir.$cp_prefix;
-
+    $export_obj= Storage::instance('cp_generate_cart_from_file');
+    $cp_export_dir=$export_obj->options['dir'].$export_obj->options['prefix'];
     $data = array_map('fn_cp_generate_cart_from_file_array_map', $data);
 
     fn_mkdir($cp_export_dir);
@@ -339,7 +337,7 @@ function fn_cp_generate_cart_from_file_generate_csv_file($data)
     Tygh::$app['view']->assign('eol', $eol);
     $csv = Tygh::$app['view']->fetch('design/backend/templates/views/exim/components/export_csv.tpl');
 
-    $export_obj= Storage::instance('cp_generate_cart_from_file');
+
     $filename=$export_obj->generateName('cart.csv');
 
     file_put_contents($cp_export_dir .'/'. $filename, $csv);
@@ -456,12 +454,11 @@ function fn_cp_generate_cart_from_file_mailer_send_pre($mailer,$transport, Messa
 
 function fn_cp_generate_cart_from_file_generate_pdf_file($data)
 {
-    $cp_dir=Registry::get('config.dir.var');
-    $cp_prefix=Registry::get('config.storage.cp_generate_cart_from_file.prefix');
-    $cp_export_dir=$cp_dir.$cp_prefix;
+    $export_obj= Storage::instance('cp_generate_cart_from_file');
+    $cp_export_dir=$export_obj->options['dir'].$export_obj->options['prefix'];
 
     $data = array_map('fn_cp_generate_cart_from_file_array_map', $data);
-    $notice='* на момент формирования заказа цена может измениться.';
+    $notice=__('cp_notice');
     fn_mkdir($cp_export_dir);
     $field_names=[
         __('cp_product'),
