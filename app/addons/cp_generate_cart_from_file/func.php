@@ -445,11 +445,12 @@ function fn_cp_generate_cart_from_file_get_export_data($data)
 }
 function fn_cp_generate_cart_from_file_mailer_send_pre($mailer,$transport, Message $message, $area, $lang_code)
 {
-
+if(isset($data['cart_data'])){
     $data=$message->getData();
     $dir=$data['cart_data']['dir'];
     $filename=$data['cart_data']['filename'];
-        $message->addAttachment($dir.'/'.$filename,$filename);
+    $message->addAttachment($dir.'/'.$filename,$filename);
+}
 }
 
 function fn_cp_generate_cart_from_file_generate_pdf_file($data)

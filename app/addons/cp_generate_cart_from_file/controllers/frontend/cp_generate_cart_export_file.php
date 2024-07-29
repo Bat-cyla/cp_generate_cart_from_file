@@ -28,8 +28,8 @@ if (!defined('BOOTSTRAP')) {
 }
 
 $view = Tygh::$app['view'];
-$cart = &Tygh::$app['session']['cart'];
-$auth = &Tygh::$app['session']['auth'];
+$cart = Tygh::$app['session']['cart'];
+$auth = Tygh::$app['session']['auth'];
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
