@@ -17,6 +17,7 @@
 * email:   sales@cart-power.com                                              *
 ******************************************************************************/
 
+use Tygh\Notifications\EventDispatcher;
 use Tygh\Storage;
 use Tygh\Registry;
 use Tygh\Enum\YesNo;
@@ -393,7 +394,7 @@ if(isset($arr['company_id']))
 function fn_cp_generate_cart_from_file_send_mail($data)
 {
 
-    /** @var \Tygh\Notifications\EventDispatcher $event_dispatcher */
+    /** @var EventDispatcher $event_dispatcher */
     $event_dispatcher = Tygh::$app['event.dispatcher'];
 
 
@@ -445,8 +446,9 @@ function fn_cp_generate_cart_from_file_get_export_data($data)
 }
 function fn_cp_generate_cart_from_file_mailer_send_pre($mailer,$transport, Message $message, $area, $lang_code)
 {
-if(isset($data['cart_data'])){
     $data=$message->getData();
+
+if(isset($data['cart_data'])){
     $dir=$data['cart_data']['dir'];
     $filename=$data['cart_data']['filename'];
     $message->addAttachment($dir.'/'.$filename,$filename);

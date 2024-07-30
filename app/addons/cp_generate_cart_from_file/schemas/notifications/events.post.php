@@ -23,7 +23,7 @@ use Tygh\Addons\GenerateCart\Notifications\DataProviders\GenerateCartDataProvide
 use Tygh\Notifications\Transports\Mail\MailMessageSchema;
 use Tygh\Enum\UserTypes;
 use Tygh\Notifications\Transports\Mail\MailTransport;
-use Tygh\Mailer\Message;
+
 
 
 
