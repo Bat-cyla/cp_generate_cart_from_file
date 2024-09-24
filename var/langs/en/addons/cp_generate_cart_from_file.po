@@ -1,0 +1,225 @@
+msgid ""
+msgstr "Project-Id-Version: tygh"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: English\n"
+"Language: en_US\n"
+
+msgctxt "Addons::name::cp_generate_cart_from_file"
+msgid "Cart-Power: Generate cart from file"
+msgstr "Cart-Power: Generate cart from file"
+
+msgctxt "Addons::description::cp_generate_cart_from_file"
+msgid "Adds the ability to generate cart from XLS and CSV file. Developed by <a target=\"_blank\" href=\"http://cart-power.com/\">Cart-Power</a>"
+msgstr "Adds the ability to generate cart from XLS and CSV file. Developed by <a target=\"_blank\" href=\"http://cart-power.com/\">Cart-Power</a>"
+
+msgctxt "SettingsSections::cp_generate_cart_from_file::general"
+msgid "General"
+msgstr "General"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::PDF_export"
+msgid "Allow clients to generate commercial proposals in PDF"
+msgstr "Allow clients to generate commercial proposals in PDF"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::CSV_export"
+msgid "Allow cart export to CSV"
+msgstr "Allow cart export to CSV"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::cp_header"
+msgid "Column Naming Rules"
+msgstr "Column Naming Rules"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::cp_name"
+msgid "Product name"
+msgstr "Product name"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::cp_artiqle"
+msgid "Product code"
+msgstr "Product code"
+
+msgctxt "SettingsOptions::cp_generate_cart_from_file::cp_amount"
+msgid "Product amount"
+msgstr "Product amount"
+
+msgctxt "Languages::cp_generate_view"
+msgid "Upload from file"
+msgstr "Upload from file"
+
+msgctxt "Languages::cp_export_view"
+msgid "Export cart"
+msgstr "Export cart"
+
+msgctxt "Languages::cp_csv_table"
+msgid "Table in CSV"
+msgstr "Table in CSV"
+
+msgctxt "Languages::cp_pdf_commercial_proposal"
+msgid "Commercial proposal in PDF"
+msgstr "Commercial proposal in PDF"
+
+msgctxt "Languages::cp_export_view_message"
+msgid "The export file is ready. You can download it or send it to the specified email address."
+msgstr "The export file is ready. You can download it or send it to the specified email address."
+
+msgctxt "Languages::select_of_column_order"
+msgid "Specify the order of the columns in your table, then upload the file"
+msgstr "Specify the order of the columns in your table, then upload the file"
+
+msgctxt "Languages::cp_name"
+msgid "Name of product"
+msgstr "Name of product"
+
+msgctxt "Languages::cp_qty"
+msgid "Product QTY"
+msgstr "Product QTY"
+
+msgctxt "Languages::cp_artiqle"
+msgid "Product number"
+msgstr "Product number"
+
+msgctxt "Languages::cp_select_files"
+msgid "Select file"
+msgstr "Select file"
+
+msgctxt "Languages::cp_load_products_from_file"
+msgid "Load products from file"
+msgstr "Load products from file"
+
+msgctxt "Languages::cp_product"
+msgid "Product"
+msgstr "Product"
+
+msgctxt "Languages::cp_product_code"
+msgid "Product code"
+msgstr "Product code"
+
+msgctxt "Languages::cp_product_options"
+msgid "Product options"
+msgstr "Product options"
+
+msgctxt "Languages::cp_vendor"
+msgid "Vendor"
+msgstr "Vendor"
+
+msgctxt "Languages::cp_price"
+msgid "Price"
+msgstr "Price"
+
+msgctxt "Languages::cp_amount"
+msgid "Amount"
+msgstr "Amount"
+
+msgctxt "Languages::cp_total_price"
+msgid "Total price"
+msgstr "Total price"
+
+msgctxt "Languages::cp_selected_files"
+msgid "Selected file"
+msgstr "Selected file"
+
+msgctxt "Languages::cp_export_pdf"
+msgid "Form a commercial offer in PDF"
+msgstr "Form a commercial offer in PDF"
+
+msgctxt "Languages::warning"
+msgid "Warning."
+msgstr "Warning."
+
+msgctxt "Languages::cp_not_valid_email_address"
+msgid "The email address you entered is not valid."
+msgstr "The email address you entered is not valid."
+
+msgctxt "Languages::cp_warning_format"
+msgid "No export format has been selected. Select the format in the addon settings."
+msgstr "No export format has been selected. Select the format in the addon settings."
+
+msgctxt "Languages::cp_bad_file_extension"
+msgid "This file extension is not supported"
+msgstr "This file extension is not supported"
+
+msgctxt "Languages::cp_specific_products"
+msgid "Select specific products from the list"
+msgstr "Select specific products from the list"
+
+msgctxt "Languages::cp_undefined_product"
+msgid "Not in site directory"
+msgstr "Not in site directory"
+
+msgctxt "Languages::cp_your_cart"
+msgid "Your cart"
+msgstr "Your cart"
+
+msgctxt "Languages::cp_variations_modal"
+msgid "Loading (Manufacturer's Article)"
+msgstr "Loading (Manufacturer's Article)"
+
+msgctxt "Languages::cp_load_file_instruction"
+msgid "Use our template or upload your own in xls, csv format"
+msgstr "Use our template or upload your own in xls, csv format"
+
+msgctxt "Languages::cp_enable_extensions_message"
+msgid "Select a file in xls, csv format"
+msgstr "Select a file in xls, csv format"
+
+msgctxt "Languages::cp_load_file"
+msgid "Download template"
+msgstr "Download template"
+
+msgctxt "Languages::cp_column_example"
+msgid "Column example"
+msgstr "Column example"
+
+msgctxt "Languages::cp_import_success"
+msgid "Upload was successful!"
+msgstr "Upload was successful!"
+
+msgctxt "Languages::cp_warning"
+msgid "Please note that for XLS files only active page of the document will be processed."
+msgstr "Please note that for XLS files only active page of the document will be processed."
+
+msgctxt "Languages::cp_bad_table"
+msgid "Nothing found in the store directory. Check the column order of your table and try again."
+msgstr "Nothing found in the store directory. Check the column order of your table and try again."
+
+msgctxt "Languages::cp_error_upload_file"
+msgid "File upload error."
+msgstr "File upload error."
+
+msgctxt "Languages::cp_upload_template"
+msgid "Order template import"
+msgstr "Order template import"
+
+msgctxt "Languages::cp_upload_template_menu_description"
+msgid "Loading a template for importing goods into an order"
+msgstr "Loading a template for importing goods into an order"
+
+msgctxt "Languages::cp_uploaded_templates"
+msgid "Uploaded templates"
+msgstr "Uploaded templates"
+
+msgctxt "Languages::cp_template_default"
+msgid "Default template"
+msgstr "Default template"
+
+msgctxt "Languages::cp_add_template"
+msgid "Add template"
+msgstr "Add template"
+
+msgctxt "Languages::cp_import_template"
+msgid "Upload template"
+msgstr "Upload template"
+
+msgctxt "Languages::load_template_file"
+msgid "Load order template"
+msgstr "Load order template"
+
+msgctxt "Languages::unload_template_file"
+msgid "Unload order template"
+msgstr "Unload order template"
+
+msgctxt "Languages::cp_notice"
+msgid "* at the time of placing an order, the price may change"
+msgstr "* at the time of placing an order, the price may change"
+
+msgctxt "Languages::wrong_column_name"
+msgid "Wrong column index given [column_name]"
+msgstr "Wrong column index given [column_name]"

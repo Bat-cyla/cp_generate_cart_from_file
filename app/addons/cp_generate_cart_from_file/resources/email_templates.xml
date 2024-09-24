@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<email_templates scheme="1.0">
+    <templates>
+        <item>
+            <code><![CDATA[send_mail_notification]]></code>
+            <area><![CDATA[C]]></area>
+            <status><![CDATA[A]]></status>
+
+            <subject><![CDATA[{{ company_name }}: {{ __("cp_your_cart") }}]]></subject>
+            <template><![CDATA[{{ snippet("header", {"title": title }  ) }}
+<p>
+                     {{ __("cp_hello ") }}
+                     <br />
+                     </p>
+                </td>
+           </tr>
+           <tr>
+                <td width="600px" valign="top" align="center" >
+                 {{ snippet("footer") }}]]></template>
+            <params_schema/>
+            <params/>
+            <addon><![CDATA[cp_generate_cart_from_file]]></addon>
+        </item>
+    </templates>
+</email_templates>

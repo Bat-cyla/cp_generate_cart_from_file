@@ -1,0 +1,106 @@
+input.cp-upload-file::file-selector-button {
+    border: none;
+    background: @primary_button;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+}
+
+input.cp-upload-file::file-selector-button:hover {
+    background: lighten(@primary_button, 20%);
+}
+
+.cp-controls {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.cp-file-template {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.cp-email-field{
+    margin: 10px 40px;
+    height: 25px;
+}
+
+.cp-send-mail-btn{
+    color: grey;
+}
+
+.cp-message {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.cp-img {
+    width: 100%;
+    height: auto;
+}
+
+.cp-format-input {
+    display: flex;
+    flex-direction: row;
+    .cp-radio-input{
+        margin-left: auto;
+    }
+}
+
+.cp-row-item-main {
+    max-width: 500px;
+
+}
+
+.cp-row-item-side {
+    padding-left: 20px;
+    border-left: 2px solid rgb(216, 216, 216);
+    display: flex;
+    justify-content: center;
+    max-width: 300px;
+}
+
+.cp-row-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.cp-input {
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+.cp-input::placeholder {
+    color: #c1c1c1;
+}
+
+.cp-warning {
+    margin-top: 10px;
+    color: rgb(135, 135, 135);
+}
+
+.cp-row-item-empty {
+    max-width: 200px;
+}
+
+.cp-upload-template-link {
+    color: #4b627c;
+}
+
+.cp-disabled {
+    opacity: 0.5;
+}
+
+.cp-required::after {
+    padding-left: 3px;
+    color: #ea7162;
+    content: "*";
+    font-size: 13px;
+    line-height: 1px;
+}
+
+td.cp-center {
+    text-align: center;
+}
