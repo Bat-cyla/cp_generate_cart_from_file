@@ -29,7 +29,6 @@ if (!defined('BOOTSTRAP')) {
 
 $view = Tygh::$app['view'];
 $cart = Tygh::$app['session']['cart'];
-$auth = Tygh::$app['session']['auth'];
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -79,9 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 if ($mode == 'view') {
     if (defined('AJAX_REQUEST')) {
-        if (empty($auth['user_id'])) {
-            Tygh::$app['ajax']->assign('force_redirection', fn_url('auth.login_form'));
-        } else {
             $cp_option= Registry::get('addons.cp_generate_cart_from_file');
             if($cp_option['PDF_export']==YesNo::YES and $cp_option['CSV_export']==YesNo::YES){
                 $export_format='pdf_csv';
@@ -94,7 +90,6 @@ if ($mode == 'view') {
                     'export_format'=> $export_format,
                 ]);
             $view->display('addons/cp_generate_cart_from_file/views/export_view.tpl');
-        }
     }
 
     exit();

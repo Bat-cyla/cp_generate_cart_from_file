@@ -35,6 +35,7 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
     $variations = [];
     $cart_data = [];
     $undefined_products = [];
+    $disabled_products=[];
 
     if (!empty($products)) {
         $cp_params = [];
@@ -47,9 +48,11 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
 
         if (!empty($cp_params['artiqles'])) {
             $product_ids = fn_cp_generate_cart_from_file_get_product_id_by_artiqle($cp_params['artiqles']);
+
         }
 
         if (!empty($product_ids)) {
+
             foreach ($product_ids as $artiqle => $p_ids) {
                 if (!empty($p_ids) && count($p_ids) > 1) {
                     $cp_params['pid'] = $p_ids;
@@ -66,15 +69,21 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
                     foreach ($products as $product) {
                         if ($product['artiqle'] == $artiqle) {
                             $cart_data[$p_ids[0]]['amount'] = $product['amount'];
+
                         }
                     }
                 } elseif (empty($p_ids)) {
+
                     foreach ($products as $product) {
-                        if ($product['artiqle'] == $artiqle) {
+
+                        if ($product['artiqle'] == $artiqle && fn_cp_generate_cart_from_file_check_product_status($product['artiqle'])) {
                             $undefined_products[] = $product;
+                        } else {
+                            $disabled_products[] = $product;
                         }
                     }
                 }
+
             }
             //find by name
             if (!empty($undefined_products)) {
@@ -99,8 +108,9 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
                                 }
                                 $cp_params['pid'] = $p_ids;
                                 list($cp_products) = fn_get_products($cp_params);
+
                                 $variations[$product_ids[$name]['artiqle']]['products'] = $cp_products;
-            
+
                                 foreach ($products as $product) {
                                     if ($product['artiqle'] == $product_ids[$name]['artiqle']) {
                                         $variations[$product_ids[$name]['artiqle']]['amount'] = $product['amount'];
@@ -114,8 +124,19 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
             }
         }
     }
+    fn_print_die($variations, $cart_data, $undefined_products, $disabled_products);
+    return [$variations, $cart_data, $undefined_products, $disabled_products];
+}
 
-    return [$variations, $cart_data, $undefined_products];
+function fn_cp_generate_cart_from_file_check_product_status($article) : bool
+{
+    if(!empty($article)){
+        $status=db_get_field('SELECT status FROM ?:cp_products WHERE code = ?s', $article);
+        if($status!=='D') {
+            return true;
+        }
+    }
+    return false;
 }
 
 function fn_cp_generate_cart_from_cart_validate_email($email) : bool
@@ -127,8 +148,9 @@ function fn_cp_generate_cart_from_file_get_product_id_by_artiqle(array $artiqles
 {
     if (!empty($artiqles)) {
         $product_ids = [];
+        $status=['A','H'];
         foreach ($artiqles as $artiqle) {
-            $product_ids[$artiqle] = db_get_fields('SELECT product_id FROM ?:products WHERE product_code LIKE ?l AND status = ?s', '%' . $artiqle . '%', 'A');
+            $product_ids[$artiqle] = db_get_fields('SELECT product_id FROM ?:products WHERE product_code LIKE ?l AND status IN (?a)', '%' . $artiqle . '%', $status);
         }
     }
 
@@ -141,6 +163,7 @@ function fn_cp_generate_cart_from_file_get_product_id_by_name(array $names = [])
         $product_ids = [];
         foreach ($names as $name) {
             $condition = explode(' ', trim($name));
+
             $count = count($condition);
 
             for ($i = 1; $i <= $count; $i++) {

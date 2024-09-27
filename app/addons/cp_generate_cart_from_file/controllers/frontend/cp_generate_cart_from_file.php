@@ -26,15 +26,17 @@ use Tygh\CpFileUploader\CpFileUploader;
 if (!defined('BOOTSTRAP')) {
     die('Access denied');
 }
-    //TODO: Убрать проверку на залогиненность пользователя. Тестотчет
+
 $view = Tygh::$app['view'];
 $cart = &Tygh::$app['session']['cart'];
-$auth = &Tygh::$app['session']['auth'];
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'generate') {
         if (isset($_FILES, $_FILES['cp_generate_attach'])) {
+
             $params = $_REQUEST;
+
             $file = $_FILES['cp_generate_attach'];
             $array_fields = $params['array_fields'];
 
@@ -82,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             if (!empty($variations) || !empty($undefined_products)) {
+                //fn_print_die($variations, $undefined_products);
                 $view->assign([
                     'variations' => $variations,
                     'undefined_products' => $undefined_products,
@@ -101,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == 'finish') {
         $params = $_REQUEST;
+
         if (!empty($params['chosen_products'])) {
             $chosen_products = $params['chosen_products'];
 
@@ -123,15 +127,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if ($mode == 'view') {
     if (defined('AJAX_REQUEST')) {
-        if (empty($auth['user_id'])) {
-            Tygh::$app['ajax']->assign('force_redirection', fn_url('auth.login_form'));
-        } else {
+
             $template_data = fn_cp_generate_cart_from_file_get_default_template_data();
             $view->assign([
                 'template_data' => $template_data,
             ]);
             $view->display('addons/cp_generate_cart_from_file/views/view.tpl');
-        }
+
     }
 
     exit();
