@@ -35,7 +35,6 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
     $variations = [];
     $cart_data = [];
     $undefined_products = [];
-    $disabled_products=[];
 
     if (!empty($products)) {
         $cp_params = [];
@@ -48,15 +47,16 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
 
         if (!empty($cp_params['artiqles'])) {
             $product_ids = fn_cp_generate_cart_from_file_get_product_id_by_artiqle($cp_params['artiqles']);
-
         }
 
         if (!empty($product_ids)) {
-
             foreach ($product_ids as $artiqle => $p_ids) {
+
                 if (!empty($p_ids) && count($p_ids) > 1) {
                     $cp_params['pid'] = $p_ids;
+
                     list($cp_products) = fn_get_products($cp_params);
+
                     $variations[$artiqle]['products'] = $cp_products;
 
                     foreach ($products as $product) {
@@ -73,13 +73,9 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
                         }
                     }
                 } elseif (empty($p_ids)) {
-
                     foreach ($products as $product) {
-
-                        if ($product['artiqle'] == $artiqle && fn_cp_generate_cart_from_file_check_product_status($product['artiqle'])) {
+                        if ($product['artiqle'] == $artiqle) {
                             $undefined_products[] = $product;
-                        } else {
-                            $disabled_products[] = $product;
                         }
                     }
                 }
@@ -87,7 +83,8 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
             }
             //find by name
             if (!empty($undefined_products)) {
-                foreach ($undefined_products as $undefined_product) {
+
+                foreach ($undefined_products as $key => $undefined_product) {
                     if (!empty($undefined_product['name'])) {
                         $cp_params['names'][] = $undefined_product['name'];
                     }
@@ -122,21 +119,10 @@ function fn_cp_generate_cart_from_file_check_products(array $products = []) : ar
                     }
                 }
             }
-        }
-    }
-    fn_print_die($variations, $cart_data, $undefined_products, $disabled_products);
-    return [$variations, $cart_data, $undefined_products, $disabled_products];
-}
 
-function fn_cp_generate_cart_from_file_check_product_status($article) : bool
-{
-    if(!empty($article)){
-        $status=db_get_field('SELECT status FROM ?:cp_products WHERE code = ?s', $article);
-        if($status!=='D') {
-            return true;
         }
     }
-    return false;
+    return [$variations, $cart_data, $undefined_products];
 }
 
 function fn_cp_generate_cart_from_cart_validate_email($email) : bool
@@ -153,7 +139,6 @@ function fn_cp_generate_cart_from_file_get_product_id_by_artiqle(array $artiqles
             $product_ids[$artiqle] = db_get_fields('SELECT product_id FROM ?:products WHERE product_code LIKE ?l AND status IN (?a)', '%' . $artiqle . '%', $status);
         }
     }
-
     return $product_ids;
 }
 
@@ -338,11 +323,44 @@ function fn_cp_generate_cart_from_file_delete_dir()
     }
 }
 
+function fn_cp_generate_cart_from_file_settings_variants_image_verification_use_for(&$objects)
+{
+    $objects['cp_export'] = __('cp_use_for_cart_export_form');
+}
 
-function fn_cp_generate_cart_from_file_generate_csv_file($data)
+function fn_cp_generate_cart_from_file_create_trial_template()
+{
+    Registry::set('config.storage.cp_generate_cart_from_file', [
+        'prefix' => 'cp_generate_cart_from_file',
+        'secured' => true,
+        'dir' => Registry::get('config.dir.var')
+    ]);
+    $template_data=[
+        'template_id' => 0,
+        'name' => __('cp_trial_template'),
+        'default_template' => YesNo::YES,
+    ];
+    $filename=fn_cp_generate_cart_from_file_generate_csv_file([],true);
+    $template_id = fn_cp_generate_cart_from_file_update_template(
+        $template_data['template_id'],
+        $template_data
+    );
+    $save_data = [
+        'template_id' => $template_id,
+        'filename' => $filename,
+        'filesize' => '114'
+    ];
+    fn_cp_generate_cart_from_file_update_attachment($save_data);
+}
+
+
+function fn_cp_generate_cart_from_file_generate_csv_file($data=[],$install=false)
 {
     $export_obj= Storage::instance('cp_generate_cart_from_file');
     $cp_export_dir=$export_obj->options['dir'].$export_obj->options['prefix'];
+    if($install){
+        $cp_export_dir.='/1';
+    }
     $data = array_map('fn_cp_generate_cart_from_file_array_map', $data);
 
     fn_mkdir($cp_export_dir);
@@ -365,9 +383,7 @@ function fn_cp_generate_cart_from_file_generate_csv_file($data)
     Tygh::$app['view']->assign('eol', $eol);
     $csv = Tygh::$app['view']->fetch('design/backend/templates/views/exim/components/export_csv.tpl');
 
-
     $filename=$export_obj->generateName('cart.csv');
-
     file_put_contents($cp_export_dir .'/'. $filename, $csv);
 
     return $filename;

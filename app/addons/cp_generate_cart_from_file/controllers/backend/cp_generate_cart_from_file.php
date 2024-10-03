@@ -54,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'filename' => $filename,
                 'filesize' => $filesize
             ];
+
             fn_cp_generate_cart_from_file_update_attachment($save_data);
         }
 

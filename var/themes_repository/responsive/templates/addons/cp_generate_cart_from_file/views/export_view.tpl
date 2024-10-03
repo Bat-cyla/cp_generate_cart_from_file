@@ -3,16 +3,10 @@
             <div class="cp-row">
                 <div class="cp-row-item-main">
                     {if $export_format == 'pdf_csv'}
-                        <div class="cp-format-input">
-                            <div class="cp-radio-input">
-                                <input type="radio" name="format" id="formatChoice1" value="csv_table" checked />
-                                <label for="formatChoice1">{__("cp_csv_table")}</label>
-                            </div>
-                            <div class="cp-radio-input">
-                                <input type="radio" name="format" id="formatChoice2" value="pdf_cp" />
-                                <label for="formatChoice2">{__("cp_pdf_commercial_proposal")}</label>
-                            </div>
-                            </div>
+                    <input type="radio" name="format" id="formatChoice1" value="csv_table" />
+                    <label for="formatChoice1">{__("cp_csv_table")}</label>
+                    <input type="radio" name="format" id="formatChoice2" value="pdf_cp" />
+                    <label for="formatChoice2">{__("cp_pdf_commercial_proposal")}</label>
                     {else}
                         <input type="hidden" name="format" value="{$export_format}">
                     {/if}

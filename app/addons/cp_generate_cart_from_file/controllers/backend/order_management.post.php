@@ -120,7 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 if ($mode == 'view') {
-    //fn_print_die($_REQUEST);
     $template_data = fn_cp_generate_cart_from_file_get_default_template_data();
     $view->assign([
         'template_data' => $template_data,

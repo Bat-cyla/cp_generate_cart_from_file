@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!empty($res)) {
                 list($variations, $cart_data, $undefined_products) = fn_cp_generate_cart_from_file_check_products($res);
             } else {
+
                 Tygh::$app['ajax']->assign('non_ajax_notifications', true);
                 fn_set_notification('E', __('error'), __("cp_bad_table"));
                 Tygh::$app['ajax']->assign('force_redirection', fn_url('checkout.cart'));
@@ -84,7 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             if (!empty($variations) || !empty($undefined_products)) {
-                //fn_print_die($variations, $undefined_products);
                 $view->assign([
                     'variations' => $variations,
                     'undefined_products' => $undefined_products,

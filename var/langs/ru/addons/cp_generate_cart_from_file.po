@@ -48,6 +48,14 @@ msgctxt "Languages::cp_export_view"
 msgid "Export cart"
 msgstr "Экспорт корзины"
 
+msgctxt "Languages::cp_use_for_cart_export_form"
+msgid "Cart export form"
+msgstr "Форма экспорта корзины"
+
+msgctxt "Languages::cp_trial_template"
+msgid "Trial template"
+msgstr "Пробный шаблон"
+
 msgctxt "Languages::cp_csv_table"
 msgid "Table in CSV"
 msgstr "Таблица в CSV"

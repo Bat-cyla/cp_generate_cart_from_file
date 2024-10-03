@@ -8,7 +8,7 @@
         context.find('a.cp-generate-cart-page-link').on('click', function() {
             ajaxGetModal();
         });
-        context.find('a.cp-export-cart-page-link').on('click', function() {
+        context.find('a.cp-export-cart-page-link').on('click', function(e) {
             ajaxGetExportModal();
         });
         context.find('li.cp-generate-cart-page-link').on('click', function() {

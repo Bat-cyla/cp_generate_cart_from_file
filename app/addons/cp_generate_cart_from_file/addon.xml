@@ -13,7 +13,7 @@
         <php_version>
             <min>7.4.0</min>
         </php_version>
-        <dependencies>price_list,pdf_documents</dependencies>
+        <dependencies>price_list,pdf_documents,recaptcha</dependencies>
     </compatibility>
     <authors>
         <author>
@@ -63,6 +63,7 @@
     </queries>
     <email_templates type="file">resources/email_templates.xml</email_templates>
     <functions>
+        <item for="install">fn_cp_generate_cart_from_file_create_trial_template</item>
         <item for="uninstall">fn_cp_generate_cart_from_file_delete_dir</item>
     </functions>
 </addon>

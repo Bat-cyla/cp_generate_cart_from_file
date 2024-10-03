@@ -48,7 +48,6 @@ class CpFileReader
         if ($this->ext == 'xls' || $this->ext == 'xlsx') {
             $this->readerExcel = PHPExcel_IOFactory::load($this->file);
             $res = $this->getTableData($array_fields, $this->readerExcel);
-
             return $res;
         }
 
@@ -74,6 +73,7 @@ class CpFileReader
      */
     protected function getTableData(array $array_fields, object $reader)
     {
+
         foreach ($array_fields as $key => $value) {
             if (preg_match('/^[a-zA-Z]{1,3}$|^\d{1,5}$/', $value)) {
                 $converted = $this->sanitizeColumnName($value);

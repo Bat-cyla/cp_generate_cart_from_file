@@ -21,7 +21,8 @@ use Tygh\Registry;
 
 if ( !defined('AREA') ) { die('Access denied'); }
     fn_register_hooks(
-        'mailer_send_pre'
+        'mailer_send_pre',
+        'settings_variants_image_verification_use_for'
     );
 
 Registry::set('config.storage.cp_generate_cart_from_file', [
